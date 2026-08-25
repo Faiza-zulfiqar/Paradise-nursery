@@ -1,10 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-
-import {
-  increaseQuantity,
-  decreaseQuantity,
-  removeFromCart,
-} from "../redux/CartSlice";
+import { removeItem, updateQuantity } from "../redux/CartSlice";
 
 function CartItem() {
   const dispatch = useDispatch();
@@ -21,12 +16,34 @@ function CartItem() {
     0
   );
 
-  const handleCheckout = () => {
-    alert("Checkout Coming Soon! 🌿");
+  const handleIncrease = (id, quantity) => {
+    dispatch(
+      updateQuantity({
+        id,
+        quantity: quantity + 1,
+      })
+    );
   };
 
-  const handleContinueShopping = () => {
-    window.location.href = "/";
+  const handleDecrease = (id, quantity) => {
+    if (quantity > 1) {
+      dispatch(
+        updateQuantity({
+          id,
+          quantity: quantity - 1,
+        })
+      );
+    } else {
+      dispatch(removeItem(id));
+    }
+  };
+
+  const handleDelete = (id) => {
+    dispatch(removeItem(id));
+  };
+
+  const handleCheckout = () => {
+    alert("Checkout Coming Soon!");
   };
 
   if (cartItems.length === 0) {
@@ -47,9 +64,9 @@ function CartItem() {
           <button
             type="button"
             className="continue-shopping-btn"
-            onClick={handleContinueShopping}
+            onClick={() => (window.location.href = "/plants")}
           >
-            ← Continue Shopping
+            Continue Shopping
           </button>
         </div>
       </section>
@@ -71,7 +88,6 @@ function CartItem() {
 
         <div className="cart-total-preview">
           <span>Total</span>
-
           <strong>${totalAmount.toFixed(2)}</strong>
         </div>
       </div>
@@ -83,14 +99,12 @@ function CartItem() {
 
             return (
               <article className="cart-item" key={item.id}>
-                {/* IMAGE */}
                 <img
                   src={item.image}
                   alt={item.name}
                   className="cart-item-image"
                 />
 
-                {/* DETAILS */}
                 <div className="cart-item-details">
                   <span className="cart-item-category">
                     {item.category}
@@ -103,7 +117,6 @@ function CartItem() {
                   </p>
                 </div>
 
-                {/* QUANTITY */}
                 <div className="quantity-section">
                   <span className="quantity-label">
                     Quantity
@@ -113,7 +126,7 @@ function CartItem() {
                     <button
                       type="button"
                       onClick={() =>
-                        dispatch(decreaseQuantity(item.id))
+                        handleDecrease(item.id, item.quantity)
                       }
                     >
                       −
@@ -124,7 +137,7 @@ function CartItem() {
                     <button
                       type="button"
                       onClick={() =>
-                        dispatch(increaseQuantity(item.id))
+                        handleIncrease(item.id, item.quantity)
                       }
                     >
                       +
@@ -132,7 +145,6 @@ function CartItem() {
                   </div>
                 </div>
 
-                {/* ITEM TOTAL */}
                 <div className="cart-item-total">
                   <span>Item Total</span>
 
@@ -141,13 +153,11 @@ function CartItem() {
                   </strong>
                 </div>
 
-                {/* DELETE */}
                 <button
                   type="button"
                   className="delete-item-btn"
-                  onClick={() =>
-                    dispatch(removeFromCart(item.id))
-                  }
+                  onClick={() => handleDelete(item.id)}
+                  aria-label={`Remove ${item.name}`}
                 >
                   🗑️
                 </button>
@@ -156,7 +166,6 @@ function CartItem() {
           })}
         </div>
 
-        {/* SUMMARY */}
         <aside className="cart-summary">
           <p className="section-label">ORDER SUMMARY</p>
 
@@ -182,7 +191,6 @@ function CartItem() {
             </strong>
           </div>
 
-          {/* CHECKOUT */}
           <button
             type="button"
             className="checkout-btn"
@@ -191,11 +199,10 @@ function CartItem() {
             Proceed to Checkout →
           </button>
 
-          {/* CONTINUE SHOPPING */}
           <button
             type="button"
             className="continue-shopping-btn"
-            onClick={handleContinueShopping}
+            onClick={() => (window.location.href = "/plants")}
           >
             ← Continue Shopping
           </button>

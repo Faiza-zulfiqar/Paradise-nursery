@@ -1,5 +1,5 @@
-import { useSelector, useDispatch } from "react-redux";
-import { addToCart } from "../redux/CartSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addItem } from "../redux/CartSlice";
 import plants from "../data/plants";
 
 function ProductList() {
@@ -10,19 +10,20 @@ function ProductList() {
   const categories = [...new Set(plants.map((plant) => plant.category))];
 
   const handleAddToCart = (plant) => {
-    dispatch(addToCart(plant));
+    dispatch(addItem(plant));
   };
 
   return (
     <section className="products-section">
       <div className="products-heading">
-        <p className="section-label">EXPLORE OUR COLLECTION</p>
+        <p className="section-label">OUR PLANTS</p>
 
-        <h2>Find Your Perfect Plant</h2>
+        <h2>Explore Our Plant Collection</h2>
 
         <p>
-          Bring a touch of nature into your home with our carefully selected
-          collection of beautiful houseplants.
+          Discover beautiful and healthy plants for your home. Choose from
+          our carefully selected collection of indoor plants, flowering
+          plants, and succulents.
         </p>
       </div>
 
@@ -35,7 +36,6 @@ function ProductList() {
           <div className="plant-category" key={category}>
             <div className="category-heading">
               <h3>{category}</h3>
-
               <span>{categoryPlants.length} plants</span>
             </div>
 
@@ -52,10 +52,6 @@ function ProductList() {
                         src={plant.image}
                         alt={plant.name}
                         className="plant-image"
-                        onError={(event) => {
-                          event.currentTarget.src =
-                            "https://placehold.co/800x600/eaf5ec/247344?text=Plant";
-                        }}
                       />
 
                       <span className="plant-category-badge">
@@ -76,6 +72,7 @@ function ProductList() {
                         </span>
 
                         <button
+                          type="button"
                           className={`add-cart-btn ${
                             isInCart ? "added" : ""
                           }`}
