@@ -21,6 +21,14 @@ function CartItem() {
     0
   );
 
+  const handleCheckout = () => {
+    alert("Checkout Coming Soon! 🌿");
+  };
+
+  const handleContinueShopping = () => {
+    window.location.href = "/";
+  };
+
   if (cartItems.length === 0) {
     return (
       <section className="cart-page">
@@ -35,6 +43,14 @@ function CartItem() {
             Your favorite plants are waiting for you. Explore our
             collection and bring some greenery home.
           </p>
+
+          <button
+            type="button"
+            className="continue-shopping-btn"
+            onClick={handleContinueShopping}
+          >
+            ← Continue Shopping
+          </button>
         </div>
       </section>
     );
@@ -166,11 +182,22 @@ function CartItem() {
             </strong>
           </div>
 
+          {/* CHECKOUT */}
           <button
             type="button"
             className="checkout-btn"
+            onClick={handleCheckout}
           >
             Proceed to Checkout →
+          </button>
+
+          {/* CONTINUE SHOPPING */}
+          <button
+            type="button"
+            className="continue-shopping-btn"
+            onClick={handleContinueShopping}
+          >
+            ← Continue Shopping
           </button>
         </aside>
       </div>
