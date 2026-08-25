@@ -16,14 +16,13 @@ function ProductList() {
   return (
     <section className="products-section">
       <div className="products-heading">
-        <p className="section-label">OUR PLANTS</p>
+        <p className="section-label">EXPLORE OUR COLLECTION</p>
 
-        <h2>Explore Our Plant Collection</h2>
+        <h2>Find Your Perfect Plant</h2>
 
         <p>
-          Discover beautiful and healthy plants for your home. Choose from
-          our carefully selected collection of indoor plants, flowering
-          plants, and succulents.
+          Bring a touch of nature into your home with our carefully selected
+          collection of beautiful houseplants.
         </p>
       </div>
 

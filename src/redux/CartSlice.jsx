@@ -9,7 +9,6 @@ const cartSlice = createSlice({
   initialState,
 
   reducers: {
-    // Add a product to the cart
     addItem: (state, action) => {
       const product = action.payload;
 
@@ -27,14 +26,12 @@ const cartSlice = createSlice({
       }
     },
 
-    // Remove a product completely from the cart
     removeItem: (state, action) => {
       state.items = state.items.filter(
         (item) => item.id !== action.payload
       );
     },
 
-    // Update product quantity
     updateQuantity: (state, action) => {
       const { id, quantity } = action.payload;
 

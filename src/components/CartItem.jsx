@@ -16,30 +16,34 @@ function CartItem() {
     0
   );
 
-  const handleIncrease = (name, quantity) => {
+  const handleIncrease = (id, quantity) => {
     dispatch(
       updateQuantity({
-        name,
+        id,
         quantity: quantity + 1,
       })
     );
   };
 
-  const handleDecrease = (name, quantity) => {
+  const handleDecrease = (id, quantity) => {
     dispatch(
       updateQuantity({
-        name,
+        id,
         quantity: quantity - 1,
       })
     );
   };
 
-  const handleDelete = (name) => {
-    dispatch(removeItem(name));
+  const handleDelete = (id) => {
+    dispatch(removeItem(id));
   };
 
   const handleCheckout = () => {
     alert("Checkout Coming Soon!");
+  };
+
+  const handleContinueShopping = () => {
+    window.location.href = "/plants";
   };
 
   if (cartItems.length === 0) {
@@ -60,7 +64,7 @@ function CartItem() {
           <button
             type="button"
             className="continue-shopping-btn"
-            onClick={() => window.history.back()}
+            onClick={handleContinueShopping}
           >
             Continue Shopping
           </button>
@@ -94,7 +98,7 @@ function CartItem() {
             const itemTotal = item.price * item.quantity;
 
             return (
-              <article className="cart-item" key={item.id || item.name}>
+              <article className="cart-item" key={item.id}>
                 <img
                   src={item.image}
                   alt={item.name}
@@ -114,14 +118,17 @@ function CartItem() {
                 </div>
 
                 <div className="quantity-section">
-                  <span className="quantity-label">Quantity</span>
+                  <span className="quantity-label">
+                    Quantity
+                  </span>
 
                   <div className="quantity-control">
                     <button
                       type="button"
                       onClick={() =>
-                        handleDecrease(item.name, item.quantity)
+                        handleDecrease(item.id, item.quantity)
                       }
+                      aria-label={`Decrease quantity of ${item.name}`}
                     >
                       −
                     </button>
@@ -131,8 +138,9 @@ function CartItem() {
                     <button
                       type="button"
                       onClick={() =>
-                        handleIncrease(item.name, item.quantity)
+                        handleIncrease(item.id, item.quantity)
                       }
+                      aria-label={`Increase quantity of ${item.name}`}
                     >
                       +
                     </button>
@@ -142,13 +150,15 @@ function CartItem() {
                 <div className="cart-item-total">
                   <span>Item Total</span>
 
-                  <strong>${itemTotal.toFixed(2)}</strong>
+                  <strong>
+                    ${itemTotal.toFixed(2)}
+                  </strong>
                 </div>
 
                 <button
                   type="button"
                   className="delete-item-btn"
-                  onClick={() => handleDelete(item.name)}
+                  onClick={() => handleDelete(item.id)}
                   aria-label={`Remove ${item.name}`}
                 >
                   🗑️
@@ -177,7 +187,10 @@ function CartItem() {
 
           <div className="summary-total">
             <span>Total</span>
-            <strong>${totalAmount.toFixed(2)}</strong>
+
+            <strong>
+              ${totalAmount.toFixed(2)}
+            </strong>
           </div>
 
           <button
@@ -191,7 +204,7 @@ function CartItem() {
           <button
             type="button"
             className="continue-shopping-btn"
-            onClick={() => window.history.back()}
+            onClick={handleContinueShopping}
           >
             ← Continue Shopping
           </button>
