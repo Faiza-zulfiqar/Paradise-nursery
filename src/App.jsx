@@ -7,18 +7,44 @@ import ProductList from "./components/ProductList";
 import CartItem from "./components/CartItem";
 
 function App() {
+  // Controls which page is currently displayed
   const [page, setPage] = useState("home");
 
+  // Required state for the Get Started functionality
+  const [showProductList, setShowProductList] = useState(false);
+
+  // Get cart items from Redux store
   const cartItems = useSelector((state) => state.cart.items);
 
+  // Calculate total number of items in the cart
   const cartCount = cartItems.reduce(
     (total, item) => total + item.quantity,
     0
   );
 
+  // Navigate between application pages
   const navigateTo = (targetPage) => {
     setPage(targetPage);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    if (targetPage === "plants") {
+      setShowProductList(true);
+    }
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  // Required Get Started handler
+  const handleGetStartedClick = () => {
+    setShowProductList(true);
+    setPage("plants");
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   return (
@@ -26,7 +52,12 @@ function App() {
       {/* ================= NAVBAR ================= */}
 
       <header className="navbar">
-        <div className="brand" onClick={() => navigateTo("home")}>
+        <div
+          className="brand"
+          onClick={() => navigateTo("home")}
+          role="button"
+          tabIndex={0}
+        >
           <span className="brand-icon">🌿</span>
 
           <div>
@@ -53,19 +84,16 @@ function App() {
             onClick={() => navigateTo("cart")}
           >
             🛒 Cart
-
-            <span className="cart-badge">
-              {cartCount}
-            </span>
+            <span className="cart-badge">{cartCount}</span>
           </button>
         </nav>
       </header>
 
-      {/* ================= HOME ================= */}
+      {/* ================= HOME / LANDING PAGE ================= */}
 
       {page === "home" && (
         <>
-          <main className="hero">
+          <main className="background-image hero">
             <div className="hero-overlay">
               <div className="hero-content">
                 <p className="eyebrow">
@@ -73,6 +101,8 @@ function App() {
                 </p>
 
                 <h2>
+                  Paradise Nursery
+                  <br />
                   Grow Happiness,
                   <br />
                   One Plant at a Time.
@@ -84,9 +114,10 @@ function App() {
                   your home.
                 </p>
 
+                {/* Required Get Started button */}
                 <button
                   className="get-started-btn"
-                  onClick={() => navigateTo("plants")}
+                  onClick={handleGetStartedClick}
                 >
                   Get Started →
                 </button>
@@ -94,19 +125,21 @@ function App() {
             </div>
           </main>
 
-          <AboutUs />
+          <section className="about-section">
+            <AboutUs />
+          </section>
         </>
       )}
 
-      {/* ================= PLANTS ================= */}
+      {/* ================= PRODUCT LISTING PAGE ================= */}
 
-      {page === "plants" && (
+      {page === "plants" && showProductList && (
         <main className="page-container">
           <ProductList />
         </main>
       )}
 
-      {/* ================= ABOUT ================= */}
+      {/* ================= ABOUT US PAGE ================= */}
 
       {page === "about" && (
         <main className="page-container">
@@ -114,7 +147,7 @@ function App() {
         </main>
       )}
 
-      {/* ================= CART ================= */}
+      {/* ================= SHOPPING CART PAGE ================= */}
 
       {page === "cart" && (
         <main className="page-container">

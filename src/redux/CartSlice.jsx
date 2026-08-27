@@ -6,9 +6,11 @@ const initialState = {
 
 const cartSlice = createSlice({
   name: "cart",
+
   initialState,
 
   reducers: {
+    // Add a plant to the shopping cart
     addItem: (state, action) => {
       const product = action.payload;
 
@@ -26,36 +28,44 @@ const cartSlice = createSlice({
       }
     },
 
+    // Remove a plant completely from the shopping cart
     removeItem: (state, action) => {
+      const productId = action.payload;
+
       state.items = state.items.filter(
-        (item) => item.id !== action.payload
+        (item) => item.id !== productId
       );
     },
 
+    // Update the quantity of a cart item
     updateQuantity: (state, action) => {
       const { id, quantity } = action.payload;
 
       const item = state.items.find(
-        (item) => item.id === id
+        (cartItem) => cartItem.id === id
       );
 
-      if (item) {
-        if (quantity <= 0) {
-          state.items = state.items.filter(
-            (cartItem) => cartItem.id !== id
-          );
-        } else {
-          item.quantity = quantity;
-        }
+      if (!item) {
+        return;
+      }
+
+      if (quantity <= 0) {
+        state.items = state.items.filter(
+          (cartItem) => cartItem.id !== id
+        );
+      } else {
+        item.quantity = quantity;
       }
     },
   },
 });
 
+// Export the required Redux actions
 export const {
   addItem,
   removeItem,
   updateQuantity,
 } = cartSlice.actions;
 
+// Export the cart reducer
 export default cartSlice.reducer;
